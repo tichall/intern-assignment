@@ -2,7 +2,8 @@ package sy.internproject.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import sy.internproject.domain.dto.request.SignupRequestDto;
 import sy.internproject.domain.enums.Authority;
 import sy.internproject.domain.enums.OAuthProvider;
 import sy.internproject.domain.enums.UserStatus;
@@ -32,9 +33,20 @@ public class User extends BaseTimeEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserStatus userStatus;
+    private Authority authority;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Authority authority;
+    private UserStatus userStatus;
+
+    public static User createBasicUser(SignupRequestDto requestDto, PasswordEncoder passwordEncoder) {
+        return User.builder()
+                .username(requestDto.getUsername())
+                .password(passwordEncoder.encode(requestDto.getPassword()))
+                .nickname(requestDto.getNickname())
+                .oAuthProvider(OAuthProvider.ORIGIN)
+                .authority(Authority.ROLE_USER)
+                .userStatus(UserStatus.ACTIVATE)
+                .build();
+    }
 }
