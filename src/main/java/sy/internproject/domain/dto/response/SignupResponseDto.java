@@ -3,20 +3,21 @@ package sy.internproject.domain.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import sy.internproject.domain.entity.User;
-import sy.internproject.domain.enums.Authority;
+
+import java.util.List;
 
 @Getter
 @Builder
 public class SignupResponseDto {
     private String username;
     private String nickname;
-    private Authority authority;
+    private List<AuthorityResponseDto> authorities;
 
     public static SignupResponseDto of(User user) {
         return SignupResponseDto.builder()
                 .username(user.getUsername())
                 .nickname(user.getNickname())
-                .authority(user.getAuthority())
+                .authorities(user.getAuthorities().stream().map(auth -> AuthorityResponseDto.of(auth.getAuthorityEnum())).toList())
                 .build();
     }
 }

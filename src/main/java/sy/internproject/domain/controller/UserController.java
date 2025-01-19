@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import sy.internproject.domain.dto.request.SignupRequestDto;
 import sy.internproject.domain.dto.response.SignupResponseDto;
 import sy.internproject.domain.service.UserService;
-import sy.internproject.global.response.Response;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,10 +19,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponseDto> signup(
+    public ResponseEntity<SignupResponseDto> signupForBasicUser(
             @RequestBody @Valid SignupRequestDto requestDto
     ) {
-        SignupResponseDto responseDto = userService.signup(requestDto);
+        SignupResponseDto responseDto = userService.signupForBasicUser(requestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(responseDto);
