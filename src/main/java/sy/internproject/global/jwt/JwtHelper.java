@@ -19,7 +19,7 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-@Slf4j(topic = "JwtProvider")
+@Slf4j(topic = "JwtHelper")
 @Component
 @RequiredArgsConstructor
 public class JwtHelper {
