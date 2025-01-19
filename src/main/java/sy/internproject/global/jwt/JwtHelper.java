@@ -57,11 +57,11 @@ public class JwtHelper {
                 .compact();
     }
 
-    public String createRefreshToken(String userEmail) {
+    public String createRefreshToken(String username) {
         Date date = new Date();
 
         return BEARER_PREFIX + Jwts.builder()
-                .setSubject(userEmail)
+                .setSubject(username)
                 .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
