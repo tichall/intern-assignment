@@ -53,9 +53,17 @@ public class SecurityConfig {
         http.sessionManagement((sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
-                        .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/api-docs").permitAll()
+                .requestMatchers("/api-docs/**").permitAll()
+                .requestMatchers("/v3/api-docs").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-resources/**").permitAll()
+                .anyRequest().authenticated()
         );
 
         http.addFilterBefore(authorizationFilter(), LoginFilter.class);
