@@ -31,6 +31,7 @@ services:
       MYSQL_DATABASE: intern
       MYSQL_USER: ${DATASOURCE_USERNAME}
       MYSQL_PASSWORD: ${DATASOURCE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATASOURCE_ROOT_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
