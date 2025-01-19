@@ -19,7 +19,7 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-@Slf4j(topic = "JwtProvider")
+@Slf4j(topic = "JwtHelper")
 @Component
 @RequiredArgsConstructor
 public class JwtHelper {
@@ -46,11 +46,11 @@ public class JwtHelper {
         key = Keys.hmacShaKeyFor(accessKeyBytes);
     }
 
-    public String createAccessToken(String userEmail) {
+    public String createAccessToken(String username) {
         Date date = new Date();
 
         return BEARER_PREFIX + Jwts.builder()
-                .setSubject(userEmail)
+                .setSubject(username)
                 .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
@@ -91,16 +91,16 @@ public class JwtHelper {
         return false;
     }
 
-    public boolean isExpiredAccessToken(String accessToken) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);
-        } catch (ExpiredJwtException e) {
-            return true;
-        }
-        return false;
-    }
-
     public Claims getUserInfoFromClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    }
+
+    public String createTestToken(String subject, Date issuedAt, Date expiration) {
+        return Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(issuedAt) // 1시간 전
+                .setExpiration(expiration) // 30분 전
+                .signWith(key, signatureAlgorithm)
+                .compact();
     }
 }
